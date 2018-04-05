@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+用户名：<input type="text" id="uname"><br>
+<span id="sname"></span><br>
+密码：<input type="text" id="upwd"><br>
+<span id="spwd"></span><br>
+<input type="button" id="btn" value="登录"><br>
+<span id="sbtn"></span>
+
+<script>
+    function $(id){
+        return document.getElementById(id)
+    }
+    $("btn").onclick = function(){
+        var ajax = null;
+        if (window.XMLHttpRequest) {
+            ajax = new XMLHttpRequest;
+        } else {
+            ajax = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        ajax.open("POST","http://plumsir.java.cdnjsp.wang/jojo/user/login");
+        ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+        ajax.send("username="+$("uname").value+"&password="+$("upwd").value);
+        ajax.onreadystatechange = function(){
+            if( ajax.status == 200 && ajax.readyState == 4 ){
+                console.log(ajax.responseText);
+                var res =JSON.parse(ajax.responseText);
+                if(res.state == 1){
+                    $("sbtn").innerHTML = res.message;
+                }else if(res.state == 0){
+                    $("sbtn").innerHTML = res.message;
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>
